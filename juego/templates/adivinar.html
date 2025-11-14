@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h2>Historial de palabras</h2>
+{%for hi in game.historial %}
+    <p>{{ hi }}</p>
+{% endfor %}
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="palabra">Palabra a adivinar </label>
+    <input id="palabra" type="text" name="your_name">
+</form>
+{% endblock %}
