@@ -2,39 +2,130 @@
 {% load static %}
 {% block content %}
 
-<div class="container" style="max-width:600px;margin:auto;padding:20px;">
-    
-    <h2 style="text-align:center;">Historial de palabras</h2>
-    <h3 style="text-align:center;">Intentos: {{ game.attempts }}</h3>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    <div style="background:#f7f7f7;padding:15px;border-radius:10px;margin-bottom:20px;">
+body {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #c8d1a1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.game-container {
+  text-align: center;
+  padding: 20px;
+  border: 3px solid #ff00c7;
+  border-radius: 10px;
+  background-color: #d0d8ae;
+  width: 330px;
+}
+
+h1 {
+  color: #ff00a8;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  gap: 5px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ff00a8;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 50px;
+  background-color: white;
+}
+
+.correct { background-color: #008316; color:white; }
+.present { background-color: #ffc300; color:white; }
+.absent  { background-color: #858585; color:white; }
+
+input[type="text"] {
+  padding: 8px;
+  font-size: 14px;
+  width: 160px;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', cursive;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #ff00a8;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+}
+
+.message {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+  font-size: 12px;
+}
+</style>
+
+<div class="game-container">
+
+    <h1>SAC Wordle</h1>
+
+    <div class="board">
         {% for hi in game.historial %}
-            <p style="margin:5px 0;">• {{ hi }}</p>
-        {% empty %}
-            <p>No hay intentos aún.</p>
+            
+            {# SI hi ES UNA LISTA DE LISTAS  #}
+            {% if hi.0.1 is not None %}
+                {% for letra, estado in hi %}
+                    <div class="
+                        cell
+                        {% if estado == 2 %}correct{% endif %}
+                        {% if estado == 1 %}present{% endif %}
+                        {% if estado == 0 %}absent{% endif %}
+                    ">
+                        {{ letra }}
+                    </div>
+                {% endfor %}
+
+            {# SI hi ES SOLO EL STRING DE LA PALABRA #}
+            {% else %}
+                {% for letra in hi %}
+                    <div class="cell">{{ letra }}</div>
+                {% endfor %}
+            {% endif %}
+
         {% endfor %}
     </div>
 
+    <div class="message">
+        Intentos: {{ game.attempts }} / {{ game.max_attempts }}
+    </div>
+
     {% if game.is_won %}
-        <h2 style="color:green;text-align:center;">¡Felicidades, has adivinado la palabra! 🎉</h2>
+        <div class="message">¡Ganaste! 🎉</div>
 
     {% elif game.attempts >= game.max_attempts %}
-        <h2 style="color:red;text-align:center;">
-            ¡Has agotado tus intentos!<br>
-            La palabra era: <strong>{{ game.word }}</strong>
-        </h2>
+        <div class="message">Perdiste 😢<br>Palabra: {{ game.word_to_guess }}</div>
 
     {% else %}
-        <form action="" method="post" style="text-align:center;margin-top:20px;">
+        <form action="" method="post">
             {% csrf_token %}
-            <label for="palabra" style="font-weight:bold;">Palabra a adivinar:</label><br>
-            <input id="palabra" type="text" name="your_name"
-                   style="margin-top:10px;padding:8px;width:70%;border-radius:5px;border:1px solid #ccc;">
-            <br><br>
-            <button type="submit" 
-                    style="padding:10px 20px;border:none;background:#007bff;color:white;border-radius:5px;cursor:pointer;">
-                Enviar
-            </button>
+            <input type="text" maxlength="5" name="your_name" placeholder="PALABRA">
+            <button type="submit">PROBAR</button>
         </form>
     {% endif %}
 

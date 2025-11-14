@@ -1,9 +1,86 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h2>oprime pa jugar<h2>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-<a href="{% url 'adivinar' %}">Juega</a>
+/* Wrapper que SÍ se puede centrar */
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Fondo y estilo general */
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #c8d1a1;
+    margin: 0;
+}
+
+/* Caja principal */
+.game-container {
+    text-align: center;
+    padding: 30px;
+    border: 4px solid #ff00a8;
+    border-radius: 12px;
+    background-color: #d0d8ae;
+    width: 350px;
+    box-shadow: 0px 0px 10px #ff00a8;
+}
+
+/* Títulos */
+h1 {
+    color: #ff00a8;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 12px;
+    margin-bottom: 25px;
+    color: #ff00a8;
+}
+
+/* Botón estilo retro */
+button {
+    padding: 12px 18px;
+    background-color: #ff00a8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
+    font-family: 'Press Start 2P', cursive;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #ff41bf;
+    transform: scale(1.05);
+}
+
+.logo {
+    margin-bottom: 20px;
+}
+</style>
+
+<div class="page-wrapper">
+    <div class="game-container">
+
+        <img src="{% static 'logo.jpg' %}" width="130" class="logo">
+
+        <h1>SAC Wordle Place</h1>
+
+        <h2>¡Oprime para jugar!</h2>
+
+        <a href="{% url 'adivinar' %}">
+            <button>Jugar 🎮</button>
+        </a>
+
+    </div>
+</div>
 
 {% endblock %}

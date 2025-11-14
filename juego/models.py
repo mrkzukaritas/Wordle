@@ -21,8 +21,8 @@ class Game(models.Model):
         for char in self.word_to_guess:
             cuentas[char]= cuentas.get(char,0)+1
 
-  
-        if self.attempts >= self.max_attempts or self.is_won:
+        self.attempts +=1
+        if self.attempts >= self.max_attempts+1 or self.is_won:
             return
         #crear un diccionario con una lista y llenarlo de ceros
         if palabra == self.word_to_guess:
@@ -60,6 +60,5 @@ class Game(models.Model):
 
         self.save()
         self.historial.append( adivinadas)
-        self.attempts +=1
         return 
 
