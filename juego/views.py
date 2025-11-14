@@ -4,15 +4,7 @@ from .models import Game
 # Create your views here.
 def home(request):
     juego= Game.objects.create()
-    print(juego.word_to_guess)
-    juego.adivinar("hola")
-    print(juego.attempts)
-    print(juego.historial)
-    print(juego.is_won)
-    juego.adivinar("yython")
-    print(juego.historial)
-    print(juego.attempts)
-    print(juego.is_won)
+    
     return render(request, 'index.html', {'game': juego})
 
 def adivinar(request):

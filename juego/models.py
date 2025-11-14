@@ -1,7 +1,7 @@
 from django.db import models
 import random
 class Palabras():
-    words=["python",]
+    words=["glass",]
     cantidad= len(words)
     def palbraRandom(self):
         return self.words[random.randint(0,self.cantidad-1)]
@@ -14,7 +14,13 @@ class Game(models.Model):
     max_attempts = models.IntegerField(default=6)
     is_won = models.BooleanField(default=False)
 
+
+
     def adivinar(self, palabra):
+        cuentas={}
+        for char in self.word_to_guess:
+            cuentas[char]= cuentas.get(char,0)+1
+
         self.attempts +=1
         if self.attempts >= self.max_attempts or self.is_won:
             return
@@ -27,16 +33,29 @@ class Game(models.Model):
         adivinadas= []
         for char in palabra:
             adivinadas.append([char,0])
+        cont=0
+        for char in palabra:
 
+            if char == self.word_to_guess[cont]:
+
+                adivinadas[cont][1]=2
+
+                cuentas[char]-=1
+            cont+=1
 
         cont=0
         for char in palabra:
-            if char == self.word_to_guess[cont]:
-                adivinadas[cont][1]=2
-            elif char in self.word_to_guess:
-                adivinadas[char][1]=1
+            if adivinadas[cont][1]==2:
+                cont+=1
+                continue
+            if char in self.word_to_guess:
+                if cuentas[char]>0:
+                    cuentas[char]-=1
+                    adivinadas[cont][1]=1
+                else:
+                    adivinadas[cont][1]=0
             else:
-                adivinadas[char][1]=0
+                adivinadas[cont][1]=0
             cont+=1
 
         self.save()
