@@ -1,7 +1,7 @@
 from django.db import models
 import random
 class Palabras():
-    words=["glass","green","point","place","plant","plate","phone"]
+    words=["glass","green","phone"]
     cantidad= len(words)
     def palbraRandom(self):
         return self.words[random.randint(0,self.cantidad-1)]
